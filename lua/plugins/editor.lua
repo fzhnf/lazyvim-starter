@@ -1,5 +1,22 @@
 return {
   {
+    "folke/snacks.nvim",
+    opts = {
+      lazygit = {
+        config = {
+          os = {
+            editPreset = "nvim-remote",
+            edit = 'if [ -z "$NVIM" ]; then nvim -- {{filename}}; else; nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}}; end',
+            editAtLine = 'if [ -z "$NVIM" ]; then nvim +{{line}} -- {{filename}}; else; nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"; end',
+            editAtLineAndWait = "nvim +{{line}} {{filename}}",
+            openDirInEditor = 'if [ -z "$NVIM" ]; then nvim -- {{dir}}; else; nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}}; end',
+          },
+        },
+      },
+    },
+  },
+
+  {
     "nvim-neo-tree/neo-tree.nvim",
     keys = {
       {
