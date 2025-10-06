@@ -5,6 +5,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
+    opts = {},
   },
   {
     "fzhnf/flutter-bloc.nvim",
