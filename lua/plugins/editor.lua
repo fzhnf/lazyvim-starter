@@ -3,13 +3,14 @@ return {
     "folke/snacks.nvim",
     opts = {
       lazygit = {
+        configure = true,
         config = {
           os = {
             editPreset = "nvim-remote",
-            edit = 'if [ -z "$NVIM" ]; then nvim -- {{filename}}; else; nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}}; end',
-            editAtLine = 'if [ -z "$NVIM" ]; then nvim +{{line}} -- {{filename}}; else; nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"; end',
-            editAtLineAndWait = "nvim +{{line}} {{filename}}",
-            openDirInEditor = 'if [ -z "$NVIM" ]; then nvim -- {{dir}}; else; nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}}; end',
+            edit = 'bash -c \'if [ -z "$NVIM" ]; then nvim -- {{filename}}; else nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}}; fi\'',
+            editAtLine = 'bash -c \'if [ -z "$NVIM" ]; then nvim +{{line}} -- {{filename}}; else nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{filename}} && nvim --server "$NVIM" --remote-send ":{{line}}<CR>"; fi\'',
+            editAtLineAndWait = "bash -c 'nvim +{{line}} {{filename}}'",
+            openDirInEditor = 'bash -c \'if [ -z "$NVIM" ]; then nvim -- {{dir}}; else nvim --server "$NVIM" --remote-send "q" && nvim --server "$NVIM" --remote {{dir}}; fi\'',
           },
         },
       },
