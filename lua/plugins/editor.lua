@@ -16,7 +16,6 @@ return {
       },
     },
   },
-
   {
     "nvim-neo-tree/neo-tree.nvim",
     keys = {
@@ -39,6 +38,7 @@ return {
       window = {
         mappings = {
           [" e"] = "close_window",
+          [" E"] = "close_window",
           ["l"] = "open",
           ["h"] = "close_node",
           ["<space>"] = "none",
