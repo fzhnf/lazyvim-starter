@@ -46,7 +46,7 @@ return {
           {
             filetype = "fyler",
             text = "󰙅 Explorer",
-            separator = true, -- Matches the sidebar border
+            separator = true,
           },
         },
       },
@@ -56,7 +56,7 @@ return {
     "A7Lavinraj/fyler.nvim",
     dependencies = { "nvim-mini/mini.icons" },
     branch = "stable", -- Use stable branch for production
-    lazy = false, -- Necessary for `default_explorer` to work properly
+    -- lazy = false, -- Necessary for `default_explorer` to work properly
     keys = {
       {
         "<leader>fe",
@@ -95,6 +95,15 @@ return {
           -- Set default mode to "sidebar" style
           win = {
             kind = "split_left_most",
+
+            kinds = {
+              split_left_most = {
+                width = "20%",
+                win_opts = {
+                  winfixwidth = true,
+                },
+              },
+            },
             -- set the window's Normal background to use the global NormalFloat group
             win_opts = {
               winhighlight = "Normal:NormalFloat,NormalNC:NormalFloat",
@@ -103,6 +112,8 @@ return {
           mappings = {
             [" e"] = "CloseView",
             [" E"] = "CloseView",
+            ["s"] = "SelectVSplit",
+            ["S"] = "SelectSplit",
 
             -- Copy Path (Y)
             ["Y"] = function(self)

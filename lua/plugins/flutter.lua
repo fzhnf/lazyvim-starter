@@ -5,7 +5,14 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-    opts = {},
+    opts = {
+      lsp = {
+        color = { -- show the derived colours for dart variables
+          enabled = true, -- whether or not to highlight color variables at all, only supported on flutter >= 2.10
+        },
+      },
+    },
+    config = true,
   },
   {
     "fzhnf/flutter-bloc.nvim",
