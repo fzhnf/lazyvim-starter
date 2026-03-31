@@ -1,26 +1,6 @@
--- Helper: Checks if Fyler is open in the current tab and returns the window ID
-local function get_fyler_win()
-  return vim.iter(vim.api.nvim_tabpage_list_wins(0)):find(function(win)
-    return vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "fyler"
-  end)
-end
-
 return {
-  {
-    "nvim-mini/mini.surround",
-    opts = {
-      mappings = {
-        add = "gsa",
-        delete = "gsd",
-        find = "gsf",
-        find_left = "gsF",
-        highlight = "gsh",
-        replace = "gsr",
-        update_n_lines = "gsn",
-      },
-    },
-  },
-
+  -- Configure lazygit integration to open files in the current Neovim instance
+  -- instead of spawning a new one while also not adding new tab
   {
     "folke/snacks.nvim",
     opts = {
@@ -34,9 +14,6 @@ return {
     },
   },
 
-  -- disable builtin lazyvim file tree in favor of fyler.nvim
-  { "folke/snacks.nvim", opts = { explorer = { enabled = false } } },
-  { "nvim-neo-tree/neo-tree.nvim", enabled = false },
   -- set bufferline offsets for fyler
   {
     "akinsho/bufferline.nvim",
@@ -52,42 +29,50 @@ return {
       },
     },
   },
+
+  -- -- disable builtin lazyvim file tree in favor of fyler.nvim
+  { "folke/snacks.nvim", opts = { explorer = { enabled = false } } },
+  { "nvim-neo-tree/neo-tree.nvim", enabled = false },
   {
     "A7Lavinraj/fyler.nvim",
     dependencies = { "nvim-mini/mini.icons" },
     branch = "stable", -- Use stable branch for production
-    -- lazy = false, -- Necessary for `default_explorer` to work properly
-    keys = {
-      {
-        "<leader>fe",
-        function()
-          local win = get_fyler_win()
-          if win and vim.api.nvim_win_is_valid(win) then
-            -- If it exists, focus it
-            vim.api.nvim_set_current_win(win)
-          else
-            -- If it doesn't exist, open it
-            require("fyler").open({ dir = LazyVim.root() })
-          end
-        end,
-        desc = "Focus or Open Fyler (Root)",
-      },
-      {
-        "<leader>fE",
-        function()
-          local win = get_fyler_win()
-          if win and vim.api.nvim_win_is_valid(win) then
-            vim.api.nvim_set_current_win(win)
-          else
-            require("fyler").open({ dir = vim.uv.cwd() })
-          end
-        end,
-        desc = "Focus or Open Fyler (CWD)",
-      },
-      -- Alias keys to match your Neo-tree style
-      { "<leader>e", "<leader>fe", desc = "Explorer Fyler (Root Dir)", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer Fyler (cwd)", remap = true },
-    },
+    keys = function()
+      local function get_fyler_win()
+        return vim.iter(vim.api.nvim_tabpage_list_wins(0)):find(function(win)
+          return vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "fyler"
+        end)
+      end
+
+      return {
+        {
+          "<leader>fe",
+          function()
+            local win = get_fyler_win()
+            if win and vim.api.nvim_win_is_valid(win) then
+              vim.api.nvim_set_current_win(win)
+            else
+              require("fyler").open({ dir = LazyVim.root() })
+            end
+          end,
+          desc = "Focus or Open Fyler (Root)",
+        },
+        {
+          "<leader>fE",
+          function()
+            local win = get_fyler_win()
+            if win and vim.api.nvim_win_is_valid(win) then
+              vim.api.nvim_set_current_win(win)
+            else
+              require("fyler").open({ dir = vim.uv.cwd() })
+            end
+          end,
+          desc = "Focus or Open Fyler (CWD)",
+        },
+        { "<leader>e", "<leader>fe", desc = "Explorer Fyler (Root Dir)", remap = true },
+        { "<leader>E", "<leader>fE", desc = "Explorer Fyler (cwd)", remap = true },
+      }
+    end,
     opts = {
       views = {
         finder = {

@@ -116,3 +116,6 @@ vim.g.snacks_animate = false
 --
 -- -- Fix markdown indentation settings
 -- vim.g.markdown_recommended_style = 0
+
+vim.g.lazyvim_php_lsp = "intelephense"
+vim.g.lazyvim_python_lsp = "basedpyright"
