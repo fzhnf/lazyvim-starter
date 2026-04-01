@@ -1,6 +1,4 @@
 return {
-  -- Configure lazygit integration to open files in the current Neovim instance
-  -- instead of spawning a new one while also not adding new tab
   {
     "folke/snacks.nvim",
     opts = {
@@ -77,7 +75,6 @@ return {
       views = {
         finder = {
           close_on_select = false,
-          -- Set default mode to "sidebar" style
           win = {
             kind = "split_left_most",
 
@@ -89,7 +86,6 @@ return {
                 },
               },
             },
-            -- set the window's Normal background to use the global NormalFloat group
             win_opts = {
               winhighlight = "Normal:NormalFloat,NormalNC:NormalFloat",
             },

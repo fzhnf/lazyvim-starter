@@ -1,20 +1,5 @@
 return {
   {
-    "stevearc/conform.nvim",
-    opts = {
-      formatters = {
-        ["markdownlint-cli2"] = {
-          stdin = false,
-          args = {
-            "--config",
-            vim.fn.stdpath("config") .. "/.markdownlint-cli2.yaml",
-            "--",
-          },
-        },
-      },
-    },
-  },
-  {
     "mfussenegger/nvim-lint",
     opts = {
       linters = {

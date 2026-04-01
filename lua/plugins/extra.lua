@@ -2,7 +2,6 @@ return {
   {
     "vyfor/cord.nvim",
     event = "BufRead",
-    ---@type CordConfig
     opts = {
       display = {
         theme = "minecraft",
