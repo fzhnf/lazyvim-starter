@@ -11,10 +11,10 @@ return {
         prev = "<M-[>",
       },
     },
-    panel = { enabled = true },
-    filetypes = {
-      markdown = true,
-      help = true,
-    },
+    -- panel = { enabled = true },
+    -- filetypes = {
+    --   markdown = true,
+    --   help = true,
+    -- },
   },
 }

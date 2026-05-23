@@ -2,6 +2,7 @@ return {
   {
     "folke/snacks.nvim",
     opts = {
+      image = { enabled = false },
       lazygit = {
         config = {
           os = {
@@ -75,15 +76,13 @@ return {
       views = {
         finder = {
           close_on_select = false,
+          delete_to_trash = true,
           win = {
-            kind = "split_left_most",
+            kind = "split_right_most",
 
             kinds = {
               split_left_most = {
                 width = "20%",
-                win_opts = {
-                  winfixwidth = true,
-                },
               },
             },
             win_opts = {
@@ -91,10 +90,11 @@ return {
             },
           },
           mappings = {
-            [" e"] = "CloseView",
-            [" E"] = "CloseView",
+            ["<leader>e"] = "CloseView",
+            ["<leader>E"] = "CloseView",
             ["s"] = "SelectVSplit",
             ["S"] = "SelectSplit",
+            ["-"] = "GotoParent",
 
             -- Copy Path (Y)
             ["Y"] = function(self)
