@@ -1,8 +1,8 @@
 return {
   {
     "folke/snacks.nvim",
+    ---@class snacks.Config
     opts = {
-      image = { enabled = false },
       lazygit = {
         config = {
           os = {
@@ -20,7 +20,7 @@ return {
       options = {
         offsets = {
           {
-            filetype = "fyler",
+            filetype = "fyler_finder",
             text = "󰙅 Explorer",
             separator = true,
           },
@@ -33,86 +33,76 @@ return {
   { "folke/snacks.nvim", opts = { explorer = { enabled = false } } },
   { "nvim-neo-tree/neo-tree.nvim", enabled = false },
   {
-    "A7Lavinraj/fyler.nvim",
-    dependencies = { "nvim-mini/mini.icons" },
-    branch = "stable", -- Use stable branch for production
+    "FylerOrg/fyler.nvim",
     keys = function()
-      local function get_fyler_win()
-        return vim.iter(vim.api.nvim_tabpage_list_wins(0)):find(function(win)
-          return vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "fyler"
-        end)
+      ---@param root string|nil
+      ---@return fun()
+      local function fyler_toggle(root)
+        return function()
+          local finder = require("fyler.finder")
+          local inst = finder.instance_get_or_nil()
+          if not inst then
+            require("fyler").open({ root_path = root })
+          elseif inst.win_id == vim.api.nvim_get_current_win() then
+            require("fyler").close()
+          else
+            vim.api.nvim_set_current_win(inst.win_id)
+          end
+        end
       end
 
       return {
         {
-          "<leader>fe",
-          function()
-            local win = get_fyler_win()
-            if win and vim.api.nvim_win_is_valid(win) then
-              vim.api.nvim_set_current_win(win)
-            else
-              require("fyler").open({ dir = LazyVim.root() })
-            end
-          end,
-          desc = "Focus or Open Fyler (Root)",
+          "<leader>e",
+          fyler_toggle(LazyVim.root()),
+          desc = "Explorer Fyler (Root Dir)",
         },
         {
-          "<leader>fE",
-          function()
-            local win = get_fyler_win()
-            if win and vim.api.nvim_win_is_valid(win) then
-              vim.api.nvim_set_current_win(win)
-            else
-              require("fyler").open({ dir = vim.uv.cwd() })
-            end
-          end,
-          desc = "Focus or Open Fyler (CWD)",
+          "<leader>E",
+          fyler_toggle(vim.uv.cwd()),
+          desc = "Explorer Fyler (cwd)",
         },
-        { "<leader>e", "<leader>fe", desc = "Explorer Fyler (Root Dir)", remap = true },
-        { "<leader>E", "<leader>fE", desc = "Explorer Fyler (cwd)", remap = true },
       }
     end,
+    ---@class fyler.Config
     opts = {
-      views = {
-        finder = {
-          close_on_select = false,
-          delete_to_trash = true,
-          win = {
-            kind = "split_right_most",
+      integrations = { icon = "mini_icons" },
+      use_as_default_explorer = true,
+      kind = "split_right_most",
+      kind_presets = { split_right_most = { width = "20%" } },
+      win_opts = { winhighlight = "Normal:NormalFloat,NormalNC:NormalFloat" },
+      extensions = {
+        trash = { enabled = true },
+        git = { enabled = true },
+      },
+      mappings = {
+        n = {
+          ["<leader>e"] = { action = "close" },
+          ["<leader>E"] = { action = "close" },
+          ["s"] = { action = "select", args = { vsplit = true } },
+          ["S"] = { action = "select", args = { split = true } },
+          ["-"] = { action = "visit", args = { parent = true } },
 
-            kinds = {
-              split_left_most = {
-                width = "20%",
-              },
-            },
-            win_opts = {
-              winhighlight = "Normal:NormalFloat,NormalNC:NormalFloat",
-            },
-          },
-          mappings = {
-            ["<leader>e"] = "CloseView",
-            ["<leader>E"] = "CloseView",
-            ["s"] = "SelectVSplit",
-            ["S"] = "SelectSplit",
-            ["-"] = "GotoParent",
-
-            -- Copy Path (Y)
-            ["Y"] = function(self)
-              local node = self:cursor_node_entry()
-              if node and node.path then
-                vim.fn.setreg("+", node.path)
-                vim.notify("Copied: " .. node.path)
+          -- Copy Path (Y)
+          ["Y"] = {
+            action = function(self)
+              local node = require("fyler.finder").parse_cursor_line(self)
+              if node and node.full_path then
+                vim.fn.setreg("+", node.full_path)
+                vim.notify("Copied: " .. node.full_path)
               end
             end,
+          },
 
-            -- Open with System App (O), default xdg-open
-            ["O"] = function(self)
-              local node = self:cursor_node_entry()
-              if node and node.path then
+          -- Open with System App (O), default xdg-open
+          ["O"] = {
+            action = function(self)
+              local node = require("fyler.finder").parse_cursor_line(self)
+              if node and node.full_path then
                 if vim.ui.open then
-                  vim.ui.open(node.path)
+                  vim.ui.open(node.full_path)
                 else
-                  vim.cmd("!xdg-open " .. vim.fn.shellescape(node.path))
+                  vim.cmd("!xdg-open " .. vim.fn.shellescape(node.full_path))
                 end
               end
             end,

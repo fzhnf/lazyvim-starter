@@ -19,11 +19,11 @@ return {
   },
   {
     "m4xshen/hardtime.nvim",
-    lazy = false,
+    event = "BufRead",
     dependencies = { "MunifTanjim/nui.nvim" },
     opts = {
       disabled_filetypes = {
-        fyler = true,
+        fyler_finder = true,
       },
       max_count = 10,
     },
