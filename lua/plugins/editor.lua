@@ -35,15 +35,17 @@ return {
 
       return {
         {
-          "<leader>e",
+          "<leader>fe",
           fyler_toggle(LazyVim.root()),
           desc = "Explorer Fyler (Root Dir)",
         },
         {
-          "<leader>E",
+          "<leader>fE",
           fyler_toggle(vim.uv.cwd()),
           desc = "Explorer Fyler (cwd)",
         },
+        { "<leader>e", " fe", desc = "Explorer Fyler (Root Dir)", remap = true },
+        { "<leader>E", " fE", desc = "Explorer Fyler (cwd)", remap = true },
       }
     end,
     ---@class fyler.Config
