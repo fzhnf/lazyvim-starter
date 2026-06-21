@@ -1,34 +1,16 @@
+local lazygit_edit_commands =
+  'test -z "$NVIM"; and nvim -- {{filename}}; or begin; nvim --server "$NVIM" --remote-send "q"; and nvim --server "$NVIM" --remote {{filename}}; end'
+
+local bufferline_custom_offsets = { {
+  filetype = "fyler_finder",
+  text = "󰙅 Explorer",
+  separator = true,
+} }
+
 return {
-  {
-    "folke/snacks.nvim",
-    ---@class snacks.Config
-    opts = {
-      lazygit = {
-        config = {
-          os = {
-            edit = 'test -z "$NVIM"; and nvim -- {{filename}}; or begin; nvim --server "$NVIM" --remote-send "q"; and nvim --server "$NVIM" --remote {{filename}}; end',
-          },
-        },
-      },
-    },
-  },
-
+  { "folke/snacks.nvim", opts = { lazygit = { config = { os = { edit = lazygit_edit_commands } } } } },
   -- set bufferline offsets for fyler
-  {
-    "akinsho/bufferline.nvim",
-    opts = {
-      options = {
-        offsets = {
-          {
-            filetype = "fyler_finder",
-            text = "󰙅 Explorer",
-            separator = true,
-          },
-        },
-      },
-    },
-  },
-
+  { "akinsho/bufferline.nvim", opts = { options = { offsets = bufferline_custom_offsets } } },
   -- -- disable builtin lazyvim file tree in favor of fyler.nvim
   { "folke/snacks.nvim", opts = { explorer = { enabled = false } } },
   { "nvim-neo-tree/neo-tree.nvim", enabled = false },
