@@ -3,10 +3,7 @@ return {
     "vyfor/cord.nvim",
     event = "BufRead",
     opts = {
-      display = {
-        theme = "minecraft",
-        flavor = "accent",
-      },
+      display = { theme = "minecraft", flavor = "accent" },
       buttons = {
         {
           label = "View Repository",
@@ -22,9 +19,7 @@ return {
     event = "BufRead",
     dependencies = { "MunifTanjim/nui.nvim" },
     opts = {
-      disabled_filetypes = {
-        fyler_finder = true,
-      },
+      disabled_filetypes = { fyler_finder = true },
       max_count = 10,
     },
   },
