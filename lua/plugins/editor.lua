@@ -54,7 +54,7 @@ return {
       use_as_default_explorer = true,
       kind = "split_right_most",
       kind_presets = { split_right_most = { width = "20%" } },
-      win_opts = { winhighlight = "Normal:NormalFloat,NormalNC:NormalFloat" },
+      win_opts = { winhighlight = "Normal:NormalFloat" },
       extensions = {
         trash = { enabled = true },
         git = { enabled = true },
@@ -63,6 +63,8 @@ return {
         n = {
           ["<leader>e"] = { action = "close" },
           ["<leader>E"] = { action = "close" },
+          ["<C-S>"] = { disabled = true },
+          ["<C-V>"] = { disabled = true },
           ["s"] = { action = "select", args = { vsplit = true } },
           ["S"] = { action = "select", args = { split = true } },
           ["-"] = { action = "visit", args = { parent = true } },
